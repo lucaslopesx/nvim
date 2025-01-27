@@ -379,15 +379,36 @@ require('lazy').setup({
 
       -- [[ Configure Telescope ]]
       -- See `:help telescope` and `:help telescope.setup()`
+      local actions = require 'telescope.actions'
+      local action_state = require 'telescope.actions.state'
+      local function delete_file(prompt_bufnr)
+        local selected = action_state.get_selected_entry()
+        local file_path = selected[1]
+
+        local confirm = vim.fn.input('Are you sure you want to delete ' .. file_path .. '? (y/n): ')
+        if confirm == 'y' then
+          os.remove(file_path)
+          print('Deleted: ' .. file_path)
+          actions.close(prompt_bufnr)
+        else
+          print 'Deletion canceled'
+        end
+      end
       require('telescope').setup {
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
         --
-        -- defaults = {
-        --   mappings = {
-        --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-        --   },
-        -- },
+        defaults = {
+          -- file_ignore_patterns = {
+          --   'node_modules',
+          -- },
+          mappings = {
+            i = {
+              ['<C-d>'] = delete_file,
+            },
+            --   i = { ['<c-enter>'] = 'to_fuzzy_refine' },
+          },
+        },
         -- pickers = {}
         extensions = {
           ['ui-select'] = {
