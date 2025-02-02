@@ -664,6 +664,14 @@ require('lazy').setup({
             },
           },
         },
+
+        zls = {},
+
+        ts_ls = {},
+
+        tailwindcss = {},
+
+        jsonls = {},
       }
 
       -- Ensure the servers and tools above are installed
