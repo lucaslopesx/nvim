@@ -91,7 +91,7 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -155,6 +155,17 @@ vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
+
+-- Set the number of spaces for a tab
+vim.opt.tabstop = 4
+
+-- Use spaces instead of tabs
+vim.opt.expandtab = true
+
+-- Make backspace delete the right number of spaces
+vim.opt.softtabstop = 4
+
+vim.opt.shiftwidth = 4 -- Number of spaces inserted when indenting
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
@@ -409,7 +420,12 @@ require('lazy').setup({
             --   i = { ['<c-enter>'] = 'to_fuzzy_refine' },
           },
         },
-        -- pickers = {}
+        pickers = {
+          find_files = {
+            hidden = true,
+            file_ignore_patterns = { '.git/', '.github/', 'node_modules/' },
+          },
+        },
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
@@ -638,8 +654,10 @@ require('lazy').setup({
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         -- clangd = {},
-        -- gopls = {},
-        -- pyright = {},
+        gopls = {
+          usePlaceholders = true,
+        },
+        pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -672,6 +690,8 @@ require('lazy').setup({
         tailwindcss = {},
 
         jsonls = {},
+
+        docker_compose_language_service = {},
       }
 
       -- Ensure the servers and tools above are installed
@@ -771,12 +791,12 @@ require('lazy').setup({
           -- `friendly-snippets` contains a variety of premade snippets.
           --    See the README about individual language/framework/plugin snippets:
           --    https://github.com/rafamadriz/friendly-snippets
-          -- {
-          --   'rafamadriz/friendly-snippets',
-          --   config = function()
-          --     require('luasnip.loaders.from_vscode').lazy_load()
-          --   end,
-          -- },
+          {
+            'rafamadriz/friendly-snippets',
+            config = function()
+              require('luasnip.loaders.from_vscode').lazy_load()
+            end,
+          },
         },
       },
       'saadparwaiz1/cmp_luasnip',
@@ -960,7 +980,7 @@ require('lazy').setup({
   --  Here are some example plugins that I've included in the Kickstart repository.
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
-  -- require 'kickstart.plugins.debug',
+  require 'kickstart.plugins.debug',
   -- require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
   -- require 'kickstart.plugins.autopairs',
