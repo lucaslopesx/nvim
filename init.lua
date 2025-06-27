@@ -692,6 +692,8 @@ require('lazy').setup({
         jsonls = {},
 
         docker_compose_language_service = {},
+
+        yamlls = {},
       }
 
       -- Ensure the servers and tools above are installed
